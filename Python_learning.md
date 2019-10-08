@@ -73,8 +73,6 @@ print(type.__class__)
 
 ## 字符byte和字符串string类型
 
-# Pypi包开发
-
 # python包的开发和发布
 
 ------
