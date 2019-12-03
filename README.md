@@ -376,7 +376,7 @@ https://dumps.wikimedia.org/zhwiki/20190301/zhwiki-20190301-pages-articles.xml.b
 
 二元模型和三元模型需要考虑上下文关系，不能直接去掉所有标点符号得到无分隔的语料。通过bz2file不解压读取语料，再利用Gensim的extract_pages类来提取每个页面[6]，此时得到的语料相比利用WikiCorpus得到的语料多了一些英文字符和中文标点符号，通过建立一个停用符号表和正则表达式两种方式清理语料，进行繁简转换和分词之后得到以一句一行的txt格式语料库。 
 
-## 有限自动状态机(DFA)：
+## 有限自动状态机(DFA，敏感词过滤)：
 
  https://blog.csdn.net/liangyihuai/article/details/82261978 
 
@@ -386,7 +386,7 @@ https://dumps.wikimedia.org/zhwiki/20190301/zhwiki-20190301-pages-articles.xml.b
 
  https://www.cnblogs.com/twoheads/p/11349541.html 
 
-## AC自动机算法：
+## AC自动机算法(敏感词过滤，多模匹配)：
 
  https://github.com/eachain/aca 
 
@@ -464,7 +464,36 @@ subtract_edit() #从序列中减去一个编辑子序列。看例子这个比较
 
  CART：特征划分基于基尼指数 
 
+
+
+
+
+
+
+三种的不同之处：
+
+ https://blog.csdn.net/songhao22/article/details/82727028 
+
 ### CART：
+
+CART的生成算法：
+输入：训练数据集D，停止计算条件
+
+输出：CART决策树
+
+根据训练数据集，从根节点开始，递归地对每个节点进行以下操作，构建二叉决策树：
+
+（1）设结点的训练数据集为D，计算现有特征对该数据集的基尼指数。此时，对每一个特征A,对其可能取的每一个值a,根据样本点对A=a的测试为“是”或“否”将D分割为D1和D2两部分，利用式（5）计算A=a时的基尼指数。
+
+（2）在所有可能的特征A以及它们可能的切分点a中，选择基尼指数最小的特征及其对应的切分点作为最优特征与最优切分点，依最优特征与最优切分点，从现结点生成两个子结点，将训练数据依特征分配到两个子节点中去。
+
+（3）对两个子节点递归地调用（1）（2），直至满足停止条件。
+
+（4）生成CART决策树。
+
+ https://www.zhihu.com/question/51012842 
+
+ https://blog.csdn.net/zhihua_oba/article/details/72230427 
 
  https://blog.csdn.net/haizhiguang/article/details/82587322 
 
@@ -479,6 +508,8 @@ GBDT (Gradient Boosting Decision Tree) 梯度提升迭代决策树。GBDT 也是
  https://www.jianshu.com/p/405f233ed04b 
 
  https://zhuanlan.zhihu.com/p/30339807 
+
+ https://www.jianshu.com/p/b90a9ce05b28 
 
 ## 聚类算法：
 
