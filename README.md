@@ -226,6 +226,12 @@ password = **
 
 # 算法部分
 
+## 概率分布和概率密度
+
+ https://www.jianshu.com/p/0cfc3204af77 
+
+## BERT模型原理
+
 ## 排列组合和分布
 
 **伯努利分布：**
@@ -331,11 +337,199 @@ p(1=m1,0=m2)=\frac {n!}{m1!(n-m1)!}p1^{m1}(1-p)^{n-m1}
 $$
 **Beta分布：**
 
+## LDA主题发现：
+
+## EM算法：
+
+似然函数：
+
+在数理统计学中，似然函数是一种关于统计模型中的参数的函数，表示模型参数中的似然性。
+
+ 给定输出x时，关于参数θ的似然函数L(θ|x)（在数值上）等于给定参数θ后变量X的概率： 
+$$
+L(\theta|x)=P(X=x|\theta)
+$$
+其中， 表示X取x时的概率。上式常常写为 或者 。需要注意的是，此处并非条件概率，因为θ不（总）是随机变量。
+
+## 统计语言模型：
+
+假定S表示某一个有意义的句子，由一连串特定顺序排列的词w1,w2,...wn组成，n为句子的长度。现在想知道S在文本中出现的可能性，即P(S)。此时需要有个模型来估算，不妨把P(S)展开表示为P(S)=P(w1,w2,...,wn)。利用条件概率的公式，S这个序列出现的概率等于每一个词出现的条件概率相乘，于是P(w1,w2,...,wn)可展开为：
+ P(w1,w2,...wn)=P(w1)P(w2|w1)P(w3|w1,w2)...P(wn|w1,w2,...,wn-1) 
+
+ 其中P(w1)表示第一个词w1出现的概率；P(w2|w1)是在已知第一个词的前提下，第二个词出现的概率；以此类推 。 显然，当句子长度过长时，P(wn|w1,w2,...,wn-1)的可能性太多，无法估算，俄国数学家马尔可夫假设任意一个词wi出现的概率只同它前面的词wi-1有关，这种假设成为马尔可夫假设，S的概率变为 
+
+ P(S)=P(w1)P(w2|w1)P(w3|w2)...P(wi|wi-1)...P(wn|wn-1) 
+
+ 其对应的统计语言模型就是二元模型。也可以假设一个词由前面N-1个词决定，即N元模型。当N=1时，每个词出现的概率与其他词无关，为一元模型，对应S的概率变为 
+
+P(S)=P(w1)P(w2)P(w3)...P(wi)...P(wn)
+
+当N=3时，每个词出现的概率与其前两个词相关，为三元模型，对应S的概率变为
+
+P(S)=P(w1)P(w2|w1)P(w3|w1,w2)...P(wi|wi-2,wi-1)...P(wn|wn-2,wn-1)
+
+维基百科是最常用且权威的开放网络数据集之一，作为极少数的人工编辑、内丰富、格式规范的文本语料，各类语言的维基百科在NLP等诸多领域应用广泛。下载地址为
+
+https://dumps.wikimedia.org/zhwiki/20190301/zhwiki-20190301-pages-articles.xml.bz2。维基百科提供的语料是xml格式的，因此需要将其转换为txt格式。由于维基百科中有很多是繁体中文网页，故需要将这些繁体字转换为简体字，采用opencc第三方库进行繁简转换。本文的统计语言模型都是基于词的，所以需要对中文句子进行分词，采用Jieba中文分词工具对句子进行分词[5]。
+
+由于一元模型不需要考虑上下文关系，所以其读取语料的方式与二元模型和三元模型不一样，直接采用Gensim的数据抽取类WikiCorpus对xml文件进行抽取，它能够去掉文本中的所有标点，留下中文字符和utf-8编码下字节数为1的标点符号，去掉这些符号后再进行繁简转换和分词，得到所需要的txt格式语料库。
+
+二元模型和三元模型需要考虑上下文关系，不能直接去掉所有标点符号得到无分隔的语料。通过bz2file不解压读取语料，再利用Gensim的extract_pages类来提取每个页面[6]，此时得到的语料相比利用WikiCorpus得到的语料多了一些英文字符和中文标点符号，通过建立一个停用符号表和正则表达式两种方式清理语料，进行繁简转换和分词之后得到以一句一行的txt格式语料库。 
+
+## 有限自动状态机(DFA)：
+
+ https://blog.csdn.net/liangyihuai/article/details/82261978 
+
+ https://blog.csdn.net/chenjiayi_yun/article/details/51699923 
+
+ https://blog.csdn.net/tomato8524/article/details/7566275 
+
+ https://www.cnblogs.com/twoheads/p/11349541.html 
+
+## AC自动机算法：
+
+ https://github.com/eachain/aca 
+
+ [https://ouuan.github.io/AC%E8%87%AA%E5%8A%A8%E6%9C%BA%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/](https://ouuan.github.io/AC自动机学习笔记/) 
+
+ [http://xiaorui.cc/2014/09/21/python%e4%b8%8b%e7%9a%84ahocorasick%e5%ae%9e%e7%8e%b0%e5%bf%ab%e9%80%9f%e7%9a%84%e5%85%b3%e9%94%ae%e5%ad%97%e5%8c%b9%e9%85%8d/](http://xiaorui.cc/2014/09/21/python下的ahocorasick实现快速的关键字匹配/) 
+
+## 关联规则算法(Apriori)：
+
+ https://blog.csdn.net/qq_36523839/article/details/82191677 
+
+## 关联规则算法(prefixspan)：
+
+ https://github.com/chuanconggao/PrefixSpan-py 
+
+ https://github.com/ICDI0906/PrefixSpan/blob/master/PrefixSpan.pdf 
+
+## 字符串相似度：
+
+ https://www.cnblogs.com/huilixieqi/p/6493089.html 
+
+ https://www.cnblogs.com/lishanyang/p/6016737.html 
+
+pip install python-Levenshtein
+
+个人总结的 关于 Levenshtein 所有函数的用法 和 注释
+
+apply_edit()  #根据第一个参数editops（）给出的操作权重，对第一个字符串基于第二个字符串进行相对于权重的操作
+
+distance() #计算2个字符串之间需要操作的绝对距离
+
+editops() #找到将一个字符串转换成另外一个字符串的所有编辑操作序列
+
+hamming() #计算2个字符串不同字符的个数，这2个字符串长度必须相同
+
+inverse() #用于反转所有的编辑操作序列
+
+jaro() #计算2个字符串的相识度，这个给与相同的字符更高的权重指数
+
+jaro_winkler() #计算2个字符串的相识度，相对于jaro 他给相识的字符串添加了更高的权重指数，所以得出的结果会相对jaro更大（%百分比比更大）
+
+matching_blocks() #找到他们不同的块和相同的块，从第六个开始相同，那么返回截止5-5不相同的1，第8个后面也开始相同所以返回8-8-1，相同后面进行对比不同，最后2个对比相同返回0
+
+median() #找到一个列表中所有字符串中相同的元素，并且将这些元素整合，找到最接近这些元素的值，可以不是字符串中的值。
+
+median_improve() #通过扰动来改进近似的广义中值字符串。
+
+opcodes() #给出所有第一个字符串转换成第二个字符串需要权重的操作和操作详情会给出一个列表，列表的值为元祖，每个元祖中有5个值
+    #[('delete', 0, 1, 0, 0), ('equal', 1, 3, 0, 2), ('insert', 3, 3, 2, 3), ('replace', 3, 4, 3, 4)]
+    #第一个值是需要修改的权重，例如第一个元祖是要删除的操作,2和3是第一个字符串需要改变的切片起始位和结束位，例如第一个元祖是删除第一字符串的0-1这个下标的元素
+    #4和5是第二个字符串需要改变的切片起始位和结束位，例如第一个元祖是删除第一字符串的0-0这个下标的元素，所以第二个不需要删除
+
+quickmedian() #最快的速度找到最相近元素出现最多从新匹配出的一个新的字符串
+
+ratio() #计算2个字符串的相似度，它是基于最小编辑距离
+
+seqratio() #计算两个字符串序列的相似率。
+
+setmedian() #找到一个字符串集的中位数(作为序列传递)。 取最接近的一个字符串进行传递，这个字符串必须是最接近所有字符串，并且返回的字符串始终是序列中的字符串之一。
+
+setratio() #计算两个字符串集的相似率(作为序列传递)。
+
+subtract_edit() #从序列中减去一个编辑子序列。看例子这个比较主要的还是可以将第一个源字符串进行改变，并且是基于第二个字符串的改变，最终目的是改变成和第二个字符串更相似甚至一样
+ https://www.jianshu.com/p/06370a33e1ee 
+
+ https://blog.csdn.net/xiao1_1bing/article/details/86374341 
+
+## 决策树：
+
+ 决策树是一种机器学习的方法。决策树的生成算法有ID3, C4.5和C5.0等 
+
+ ID3：特征划分基于信息增益 
+
+ C4.5：特征划分基于信息增益比 
+
+ CART：特征划分基于基尼指数 
+
+### CART：
+
+ https://blog.csdn.net/haizhiguang/article/details/82587322 
+
+ https://blog.csdn.net/gyq423/article/details/82147000 
+
+ https://zhuanlan.zhihu.com/p/30059442 
+
+## GBDT(GradientBoostingDecisionTree）：
+
+GBDT (Gradient Boosting Decision Tree) 梯度提升迭代决策树。GBDT 也是 Boosting 算法的一种，但是和 AdaBoost 算法不同（AdaBoost 算法上一篇文章已经介绍）；区别如下：AdaBoost 算法是利用前一轮的弱学习器的误差来更新样本权重值，然后一轮一轮的迭代；GBDT 也是迭代，但是 GBDT 要求弱学习器必须是 CART 模型，而且 GBDT 在模型训练的时候，是要求模型预测的样本损失尽可能的小。 
+
+ https://www.jianshu.com/p/405f233ed04b 
+
+ https://zhuanlan.zhihu.com/p/30339807 
+
 ## 聚类算法：
 
 ### Kmeans：
 
+```
+from sklearn.cluster import KMeans
+X = np.array([[1,1],[1,-1],[-1,1],[-1,-1],[1.41,0],[-1.41,0],[0,1.41],[0,-1.41],[2,2],[2,-2],[-2,2],[-2,-2],[2.82,0],[-2.82,0],[0,2.82],[0,-2.82]])
+#plt.scatter(X[:, 0], X[:, 1], marker='o')
+y_pred = KMeans(n_clusters=2, random_state=9).fit_predict(X)
+plt.scatter(X[:, 0], X[:, 1], c=y_pred)
+plt.show()
+```
+
+
+
 ### DBSCAN：
+
+https://www.naftaliharris.com/blog/visualizing-dbscan-clustering/
+
+可视化的DBSCAN
+
+基本概念：
+
+ （1）Eps邻域：给定对象半径Eps内的邻域称为该对象的Eps邻域 
+
+ （2）核心点（core point）：如果对象的Eps邻域至少包含最小数目MinPts的对象，则称该对象为核心对象; 
+
+ （3）边界点（edge point）：边界点不是核心点，但落在某个核心点的邻域内; 
+
+ （4）噪音点（outlier point）：既不是核心点，也不是边界点的任何点; 
+
+ （5）直接密度可达(directly density-reachable)：给定一个对象集合D，如果p在q的Eps邻域内，而q是一个核心对象，则称对象p从对象q出发时是直接密度可达的; 
+
+ （6）密度可达(density-reachable)：如果存在一个对象链 p1, …,pi,.., pn，满足p1 = p 和pn = q，pi是从pi+1关于Eps和MinPts直接密度可达的，则对象p是从对象q关于Eps和MinPts密度可达的; 
+
+ （7）密度相连(density-connected)：如果存在对象O∈D，使对象p和q都是从O关于Eps和MinPts密度可达的，那么对象p到q是关于Eps和MinPts密度相连的。 
+
+ （8）类（cluster）:设非空集合,若满足： 
+
+图“直接密度可达”和“密度可达”概念示意描述。根据前文基本概念的描述知道：由于有标记的各点­M、P、O和R的Eps近邻均包含3个以上的点，因此它们都是核对象；M­是从P“直接密度可达”；而Q则是从­M“直接密度可达”；基于上述结果，Q是从P“密度可达”；但P从Q无法“密度可达”(非对称)。类似地，S和R从O是“密度可达”的；O、R和S均是“密度相连”（对称）的。
+
+总结：半径越大，需要对应minpts也越多才行，极端情况就是，半径很大，minpts小，簇变成一个，所有点彼此都是密度直达点或者密度可达点。
+
+半径描述的形成簇的多少，minpts描述的是簇内稠密的程度。
+
+轮廓系数：
+$$
+C_3^2=\frac {A_3^2}{A_2^2}=\frac {3!}{k!(n-k)!}
+$$
+
 
 ## P问题，NP问题，NP完全问题
 
