@@ -68,8 +68,55 @@ print(type.__class__)
 
 2.type比作是人,
 
+例子：
+import sys, traceback
 
+####1
+class A_ancestor(type):
 
+    def __call__(cls, *args, **kwargs): # 这里的cls，即Foo类
+        print(111111)
+        if not hasattr(cls, '_instance'):
+            cls._instance = super(A_ancestor, cls).__call__(*args, **kwargs)
+        print(33333)
+        return cls._instance
+
+class A(metaclass=A_ancestor):
+
+    def __init__(self):
+        pass
+
+    def __new__(cls, *args, **kwargs):
+        print(22222222)
+        return object.__new__(cls, *args, **kwargs)
+
+####2
+class B(object):
+
+    def __new__(cls, *args, **kwargs):
+        if not hasattr(cls, "_instance"):
+            cls._instance = object.__new__(cls, *args, **kwargs)
+        return cls._instance
+
+a1 = A()
+a2 = A()
+print(a1)
+print(a2)
+
+b1 =B()
+b2=B()
+print(b1)
+print(b2)
+结果
+111111
+22222222
+33333
+111111
+33333
+<__main__.A object at 0x0000013AAE06A3C8>
+<__main__.A object at 0x0000013AAE06A3C8>
+<__main__.B object at 0x0000013AAE063C88>
+<__main__.B object at 0x0000013AAE063C88>
 由图形来详加解释：
 
 ## argparse模块
