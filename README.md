@@ -69,6 +69,7 @@ print(type.__class__)
 2.type比作是人,
 
 例子：
+```
 import sys, traceback
 
 ####1
@@ -107,7 +108,9 @@ b1 =B()
 b2=B()
 print(b1)
 print(b2)
+```
 结果
+```
 111111
 22222222
 33333
@@ -117,6 +120,7 @@ print(b2)
 <__main__.A object at 0x0000013AAE06A3C8>
 <__main__.B object at 0x0000013AAE063C88>
 <__main__.B object at 0x0000013AAE063C88>
+```
 由图形来详加解释：
 
 ## argparse模块
